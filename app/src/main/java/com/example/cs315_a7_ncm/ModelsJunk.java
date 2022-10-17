@@ -41,7 +41,7 @@ public class ModelsJunk
                     try
                     {
                         JSONObject object = response.getJSONObject("record");
-                        JSONArray jsonArray = object.getJSONArray("gameCompanies");
+                        JSONArray jsonArray = object.getJSONArray("Words");
 
                         ITEMS.clear();
                         ITEM_MAP.clear();
