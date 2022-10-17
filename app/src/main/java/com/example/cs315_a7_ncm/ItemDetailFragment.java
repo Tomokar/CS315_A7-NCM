@@ -2,6 +2,7 @@ package com.example.cs315_a7_ncm;
 
 import android.content.ClipData;
 import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.DragEvent;
 
@@ -99,6 +100,8 @@ public class ItemDetailFragment extends Fragment
         mToolbarLayout = rootView.findViewById(R.id.toolbar_layout);
         mTextView = binding.itemDetail;
 
+        mTextView.setTextAppearance(R.style.ncm_Theme);
+
         testingFab = rootView.findViewById(R.id.fab);
 
         // Show the placeholder content as text in a TextView & in the toolbar if available.
@@ -119,11 +122,16 @@ public class ItemDetailFragment extends Fragment
         if (mItem != null)
         {
 //            getActivity().getActionBar().setTitle(mItem.gameCompanyName);
-            mTextView.setText(mItem.wordsDefinition + "\n\n" + "Etymology: " + mItem.wordsEtymology);
+
+//            mTextView.setText(mItem.wordsDefinition + "\n\n" + "Etymology" + "\n - \n" + mItem.wordsEtymology);
+            mTextView.setText(mItem.wordsDefinition);
 //            mToolbar.setTitle(getString(R.string.dev_name));
+
 
             if (mToolbarLayout != null)
             {
+                mToolbarLayout.setCollapsedTitleTextAppearance(R.style.ncm_Theme);
+                mToolbarLayout.setExpandedTitleTextAppearance(R.style.ncm_Theme);
                 mToolbarLayout.setTitle(mItem.wordsWord);
             }
         }
@@ -148,25 +156,15 @@ public class ItemDetailFragment extends Fragment
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>()
-                {
-                    @Override
-                    public void onResponse(String response)
-                    {
-                        // Display the response string in our convenient existing text view
-                        response = appRes.getString(R.string.tanner_response) + response;
-                        mTextView.setText(response);
-                        // NEXT, we need to use GSON to turn that JSON into a model
-                    }
+                response -> {
+                    // Display the response string in our convenient existing text view
+                    response = appRes.getString(R.string.tanner_response) + response;
+                    mTextView.setText(response);
+                    // NEXT, we need to use GSON to turn that JSON into a model
                 },
-                new Response.ErrorListener()
-                {
-                    @Override
-                    public void onErrorResponse(VolleyError error)
-                    {
-                        // you should drop a breakpoint RIGHT HERE if you need to see the error coming back
-                        mTextView.setText(R.string.tanner_error);
-                    }
+                error -> {
+                    // you should drop a breakpoint RIGHT HERE if you need to see the error coming back
+                    mTextView.setText(R.string.tanner_error);
                 });
 
         // Add the request to the RequestQueue.

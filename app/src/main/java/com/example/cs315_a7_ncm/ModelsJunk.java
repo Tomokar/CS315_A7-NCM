@@ -47,11 +47,11 @@ public class ModelsJunk
                             JSONObject wordsBundle = jsonArray.getJSONObject(i);
 
                             String wordsWord = wordsBundle.getString("word");
-                            String wordsType = String.valueOf(wordsBundle.getInt("type"));
-                            String wordsDefinition = wordsBundle.getString("definition");
-                            String wordsEtymology = wordsBundle.getString("etymology");
+                            String wordsType = wordsBundle.getString("type");
+                            String wordsDefinition = wordsBundle.getString("definition") + "\n\n" + "Etymology" + "\n - \n" + wordsBundle.getString("etymology");
+//                            String wordsEtymology = wordsBundle.getString("etymology");
 
-                            ModelBoy modelB = new ModelBoy(wordsWord, wordsType, wordsDefinition, wordsEtymology);
+                            ModelBoy modelB = new ModelBoy(wordsWord, wordsType, wordsDefinition/*, wordsEtymology*/);
                             ITEMS.add(modelB);
                             ITEM_MAP.put(wordsWord, modelB);
                         }
