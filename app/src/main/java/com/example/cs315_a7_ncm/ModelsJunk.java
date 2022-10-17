@@ -30,14 +30,10 @@ public class ModelsJunk
     {
         RequestQueue mQueue = Volley.newRequestQueue(activity);
 
-        String url = appRes.getString(R.string.tanner_url);
+        String url = appRes.getString(R.string.my_url);
 
         JsonObjectRequest mRequest = new JsonObjectRequest(Request.Method.GET, url, null,
-            new Response.Listener<JSONObject>()
-            {
-                @Override
-                public void onResponse(JSONObject response)
-                {
+                response -> {
                     try
                     {
                         JSONObject object = response.getJSONObject("record");
@@ -48,15 +44,16 @@ public class ModelsJunk
 
                         for (int i = 0; i < jsonArray.length(); i++)
                         {
-                            JSONObject gameCompany = jsonArray.getJSONObject(i);
+                            JSONObject wordsBundle = jsonArray.getJSONObject(i);
 
-                            String companyName = gameCompany.getString("name");
-                            String companyYear = String.valueOf(gameCompany.getInt("year"));
-                            String companyConsole = gameCompany.getString("recentConsole");
+                            String wordsWord = wordsBundle.getString("word");
+                            String wordsType = String.valueOf(wordsBundle.getInt("type"));
+                            String wordsDefinition = wordsBundle.getString("definition");
+                            String wordsEtymology = wordsBundle.getString("etymology");
 
-                            ModelBoy modelB = new ModelBoy(companyName, companyYear, companyConsole);
+                            ModelBoy modelB = new ModelBoy(wordsWord, wordsType, wordsDefinition, wordsEtymology);
                             ITEMS.add(modelB);
-                            ITEM_MAP.put(companyName, modelB);
+                            ITEM_MAP.put(wordsWord, modelB);
                         }
 
 //                        activity.recreate();
@@ -65,16 +62,8 @@ public class ModelsJunk
                     {
                         e.printStackTrace();
                     }
-                }
-            },
-            new Response.ErrorListener()
-            {
-                @Override
-                public void onErrorResponse(VolleyError error)
-                {
-                    error.printStackTrace();
-                }
-            });
+                },
+                Throwable::printStackTrace);
 
         mQueue.add(mRequest);
     }

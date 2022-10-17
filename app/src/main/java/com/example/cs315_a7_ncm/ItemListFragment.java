@@ -1,9 +1,7 @@
 package com.example.cs315_a7_ncm;
 
-import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipDescription;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -17,7 +15,6 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -126,15 +123,15 @@ public class ItemListFragment extends Fragment
         public void onBindViewHolder(final ViewHolder holder, int position)
         {
             holder.modelItem = mValues.get(position);
-            holder.mIdView.setText(mValues.get(position).gameCompanyName);
-            holder.mContentView.setText(mValues.get(position).gameCompanyYear);
+            holder.mIdView.setText(mValues.get(position).wordsWord);
+            holder.mContentView.setText(mValues.get(position).wordsType);
 
             holder.itemView.setTag(mValues.get(position));
             holder.itemView.setOnClickListener(itemView ->
             {
                 ModelBoy item = (ModelBoy) itemView.getTag();
                 Bundle arguments = new Bundle();
-                arguments.putString(ItemDetailFragment.ARG_ITEM_ID, item.gameCompanyName);
+                arguments.putString(ItemDetailFragment.ARG_ITEM_ID, item.wordsWord);
                 if (mItemDetailFragmentContainer != null)
                 {
                     Navigation.findNavController(mItemDetailFragmentContainer).navigate(R.id.fragment_item_detail, arguments);
@@ -154,7 +151,7 @@ public class ItemListFragment extends Fragment
                 holder.itemView.setOnContextClickListener(v ->
                 {
                     ModelBoy item = (ModelBoy) holder.itemView.getTag();
-                    Toast.makeText(holder.itemView.getContext(), "Context click of item " + item.gameCompanyName, Toast.LENGTH_LONG).show();
+                    Toast.makeText(holder.itemView.getContext(), "Context click of item " + item.wordsWord, Toast.LENGTH_LONG).show();
                     return true;
                 });
             }
@@ -162,8 +159,8 @@ public class ItemListFragment extends Fragment
             {
                 // Setting the item id as the clip data so that the drop target is able to
                 // identify the id of the content
-                ClipData.Item clipItem = new ClipData.Item(mValues.get(position).gameCompanyName);
-                ClipData dragData = new ClipData(((ModelBoy) v.getTag()).gameCompanyYear, new String[]{ClipDescription.MIMETYPE_TEXT_PLAIN}, clipItem);
+                ClipData.Item clipItem = new ClipData.Item(mValues.get(position).wordsWord);
+                ClipData dragData = new ClipData(((ModelBoy) v.getTag()).wordsType, new String[]{ClipDescription.MIMETYPE_TEXT_PLAIN}, clipItem);
 
                 if (Build.VERSION.SDK_INT >= 24)
                 {

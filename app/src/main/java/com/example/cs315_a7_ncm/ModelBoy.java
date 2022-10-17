@@ -4,25 +4,30 @@ import com.google.gson.annotations.SerializedName;
 
 public class ModelBoy
 {
-    @SerializedName("name")
-    String gameCompanyName;
-    @SerializedName("year")
-    String gameCompanyYear;
-    @SerializedName("recentConsole")
-    String gameCompanyConsole;
+    @SerializedName("word")
+    String wordsWord;
+    @SerializedName("type")
+    String wordsType;
+    @SerializedName("definition")
+    String wordsDefinition;
+    @SerializedName("etymology")
+    String wordsEtymology;
 
-    public ModelBoy(String name, String year, String console)
+    public ModelBoy(String word, String type, String definition, String etymology)
     {
-        gameCompanyName = name;
-        gameCompanyYear = year;
-        gameCompanyConsole = console;
+        wordsWord = word;
+        wordsType = type;
+        wordsDefinition = definition;
+        wordsEtymology = etymology;
     }
 
-    public String getGameCompanyName() { return gameCompanyName; }
-    public String getGameCompanyYear() { return gameCompanyYear; }
-    public String getGameCompanyConsole() { return gameCompanyConsole; }
+    public String getWordsWord() { return wordsWord; }
+    public String getWordsType() { return wordsType; }
+    public String getWordsDefinition() { return wordsDefinition; }
+    public String getWordsEtymology() { return wordsEtymology; }
 
-    public void setGameCompanyName(final String gameCompanyName) { this.gameCompanyName = gameCompanyName; }
-    public void setGameCompanyYear(final String gameCompanyYear) { this.gameCompanyYear = gameCompanyYear; }
-    public void setGameCompanyConsole(final String gameCompanyConsole) { this.gameCompanyConsole = gameCompanyConsole; }
+    public void setWordsWord(final String wordsWord) { this.wordsWord = wordsWord; }
+    public void setWordsType(final String wordsType) { this.wordsType = wordsType; }
+    public void setWordsDefinition(final String wordsDefinition) { this.wordsDefinition = wordsDefinition; }
+    public void setWordsEtymology(final String wordsEtymology) { this.wordsEtymology = wordsEtymology; }
 }

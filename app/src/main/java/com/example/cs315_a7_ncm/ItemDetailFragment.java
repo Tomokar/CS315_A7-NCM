@@ -2,7 +2,6 @@ package com.example.cs315_a7_ncm;
 
 import android.content.ClipData;
 import android.content.res.Resources;
-import android.graphics.ColorSpace;
 import android.os.Bundle;
 import android.view.DragEvent;
 
@@ -19,19 +18,11 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.example.cs315_a7_ncm.databinding.FragmentItemDetailBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.gson.Gson;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.Objects;
 
 /**
  * A fragment representing a single Item detail screen.
@@ -128,12 +119,12 @@ public class ItemDetailFragment extends Fragment
         if (mItem != null)
         {
 //            getActivity().getActionBar().setTitle(mItem.gameCompanyName);
-            mTextView.setText(mItem.gameCompanyConsole);
+            mTextView.setText(mItem.wordsDefinition + "\n\n" + "Etymology: " + mItem.wordsEtymology);
 //            mToolbar.setTitle(getString(R.string.dev_name));
 
             if (mToolbarLayout != null)
             {
-                mToolbarLayout.setTitle(mItem.gameCompanyName);
+                mToolbarLayout.setTitle(mItem.wordsWord);
             }
         }
 
