@@ -13,7 +13,6 @@ import com.example.cs315_a7_ncm.databinding.ActivityItemDetailBinding;
 
 public class ItemDetailHostActivity extends AppCompatActivity
 {
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -27,6 +26,11 @@ public class ItemDetailHostActivity extends AppCompatActivity
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
 
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+    }
+
+    public void setActionBarTitle(String title)
+    {
+        getSupportActionBar().setTitle(title);
     }
 
     @Override

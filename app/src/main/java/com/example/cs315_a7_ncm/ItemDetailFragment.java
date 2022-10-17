@@ -1,10 +1,13 @@
 package com.example.cs315_a7_ncm;
 
 import android.content.ClipData;
+import android.content.res.Resources;
+import android.graphics.ColorSpace;
 import android.os.Bundle;
 import android.view.DragEvent;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -20,13 +23,15 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.example.cs315_a7_ncm.placeholder.PlaceholderContent;
 import com.example.cs315_a7_ncm.databinding.FragmentItemDetailBinding;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Objects;
 
 /**
  * A fragment representing a single Item detail screen.
@@ -45,8 +50,9 @@ public class ItemDetailFragment extends Fragment
     /**
      * The placeholder content this fragment is presenting.
      */
-    private PlaceholderContent.PlaceholderItem mItem;
+    private ModelBoy mItem;
     private CollapsingToolbarLayout mToolbarLayout;
+    private Toolbar mToolbar;
     private TextView mTextView;
 
     private final View.OnDragListener dragListener = (v, event) ->
@@ -54,7 +60,7 @@ public class ItemDetailFragment extends Fragment
         if (event.getAction() == DragEvent.ACTION_DROP)
         {
             ClipData.Item clipDataItem = event.getClipData().getItemAt(0);
-            mItem = PlaceholderContent.ITEM_MAP.get(clipDataItem.getText().toString());
+            mItem = ModelsJunk.ITEM_MAP.get(clipDataItem.getText().toString());
             updateContent();
         }
         return true;
@@ -62,6 +68,8 @@ public class ItemDetailFragment extends Fragment
     private FragmentItemDetailBinding binding;
 
     private FloatingActionButton testingFab;
+
+    Resources appRes = App.getContext().getResources();
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -77,13 +85,16 @@ public class ItemDetailFragment extends Fragment
     {
         super.onCreate(savedInstanceState);
 
+
+//        ((ItemDetailHostActivity) requireActivity()).setActionBarTitle(mItem.gameCompanyName);
+
         assert getArguments() != null;
         if (getArguments().containsKey(ARG_ITEM_ID))
         {
             // Load the placeholder content specified by the fragment
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
-            mItem = PlaceholderContent.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
+            mItem = ModelsJunk.ITEM_MAP.get(getArguments().getString(ARG_ITEM_ID));
         }
     }
 
@@ -93,6 +104,7 @@ public class ItemDetailFragment extends Fragment
         binding = FragmentItemDetailBinding.inflate(inflater, container, false);
         View rootView = binding.getRoot();
 
+        mToolbar = binding.detailToolbar;
         mToolbarLayout = rootView.findViewById(R.id.toolbar_layout);
         mTextView = binding.itemDetail;
 
@@ -115,10 +127,13 @@ public class ItemDetailFragment extends Fragment
     {
         if (mItem != null)
         {
-            mTextView.setText(mItem.details);
+//            getActivity().getActionBar().setTitle(mItem.gameCompanyName);
+            mTextView.setText(mItem.gameCompanyConsole);
+//            mToolbar.setTitle(getString(R.string.dev_name));
+
             if (mToolbarLayout != null)
             {
-                mToolbarLayout.setTitle(mItem.content);
+                mToolbarLayout.setTitle(mItem.gameCompanyName);
             }
         }
 
@@ -126,8 +141,8 @@ public class ItemDetailFragment extends Fragment
         {
             testingFab.setOnClickListener(view ->
             {
-                testAllThatJazz();
-//                    jsonParse();
+//                testAllThatJazz();
+//                jsonParse();
             });
         }
     }
@@ -135,6 +150,7 @@ public class ItemDetailFragment extends Fragment
     private void testAllThatJazz()
     {
         String url = getString(R.string.tanner_url);  // THAT should be in a strings.xml file!
+//        url = "https://api.jsonbin.io/v3/b/6345a6940e6a79321e2506ae"; //my url
 
         // Instantiate the RequestQueue.
         RequestQueue queue = Volley.newRequestQueue(requireActivity());
@@ -147,7 +163,7 @@ public class ItemDetailFragment extends Fragment
                     public void onResponse(String response)
                     {
                         // Display the response string in our convenient existing text view
-                        response = R.string.tanner_response + response;
+                        response = appRes.getString(R.string.tanner_response) + response;
                         mTextView.setText(response);
                         // NEXT, we need to use GSON to turn that JSON into a model
                     }
@@ -164,49 +180,5 @@ public class ItemDetailFragment extends Fragment
 
         // Add the request to the RequestQueue.
         queue.add(stringRequest);
-    }
-
-    private void jsonParse()
-    {
-        String url = getString(R.string.my_url);
-
-        RequestQueue mQueue = Volley.newRequestQueue(requireActivity());
-
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>()
-                {
-                    @Override
-                    public void onResponse(JSONObject response)
-                    {
-                        try {
-                            JSONArray jsonArray = response.getJSONArray("Words");
-
-                            for (int i = 0; i < jsonArray.length(); i++)
-                            {
-                                JSONObject wordEntry = jsonArray.getJSONObject(i);
-
-                                String word = wordEntry.getString("word");
-                                String type = wordEntry.getString("type");
-                                String definition = wordEntry.getString("definition");
-                                String etymology = wordEntry.getString("etymology");
-
-                                mTextView.append(word + ", " + type + ", " + definition + ", " + etymology + "\n\n");
-                            }
-                        }
-                        catch (JSONException e)
-                        {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener()
-                {
-                    @Override
-                    public void onErrorResponse(VolleyError error)
-                    {
-                        error.printStackTrace();
-                    }
-                });
-        mQueue.add(request);
     }
 }

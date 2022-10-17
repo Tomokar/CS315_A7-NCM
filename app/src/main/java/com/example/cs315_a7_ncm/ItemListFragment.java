@@ -1,10 +1,13 @@
 package com.example.cs315_a7_ncm;
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipDescription;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -14,13 +17,12 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.cs315_a7_ncm.databinding.FragmentItemListBinding;
 import com.example.cs315_a7_ncm.databinding.ItemListContentBinding;
-
-import com.example.cs315_a7_ncm.placeholder.PlaceholderContent;
 
 import java.util.List;
 
@@ -34,7 +36,6 @@ import java.util.List;
  */
 public class ItemListFragment extends Fragment
 {
-
     /**
      * Method to intercept global key events in the
      * item list fragment to trigger keyboard shortcuts
@@ -59,9 +60,18 @@ public class ItemListFragment extends Fragment
     private FragmentItemListBinding binding;
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+
+//        progressBar = R.layout.item_list_content.findViewById(R.id.progressBar);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         binding = FragmentItemListBinding.inflate(inflater, container, false);
+
         return binding.getRoot();
     }
 
@@ -83,7 +93,7 @@ public class ItemListFragment extends Fragment
 
     private void setupRecyclerView(RecyclerView recyclerView, View itemDetailFragmentContainer)
     {
-        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(PlaceholderContent.ITEMS, itemDetailFragmentContainer));
+        recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(ModelsJunk.ITEMS, itemDetailFragmentContainer));
     }
 
     @Override
@@ -96,10 +106,10 @@ public class ItemListFragment extends Fragment
     public static class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder>
     {
-        private final List<PlaceholderContent.PlaceholderItem> mValues;
+        private final List<ModelBoy> mValues;
         private final View mItemDetailFragmentContainer;
 
-        SimpleItemRecyclerViewAdapter(List<PlaceholderContent.PlaceholderItem> items, View itemDetailFragmentContainer)
+        SimpleItemRecyclerViewAdapter(List<ModelBoy> items, View itemDetailFragmentContainer)
         {
             mValues = items;
             mItemDetailFragmentContainer = itemDetailFragmentContainer;
@@ -115,15 +125,16 @@ public class ItemListFragment extends Fragment
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position)
         {
-            holder.mIdView.setText(mValues.get(position).id);
-            holder.mContentView.setText(mValues.get(position).content);
+            holder.modelItem = mValues.get(position);
+            holder.mIdView.setText(mValues.get(position).gameCompanyName);
+            holder.mContentView.setText(mValues.get(position).gameCompanyYear);
 
             holder.itemView.setTag(mValues.get(position));
             holder.itemView.setOnClickListener(itemView ->
             {
-                PlaceholderContent.PlaceholderItem item = (PlaceholderContent.PlaceholderItem) itemView.getTag();
+                ModelBoy item = (ModelBoy) itemView.getTag();
                 Bundle arguments = new Bundle();
-                arguments.putString(ItemDetailFragment.ARG_ITEM_ID, item.id);
+                arguments.putString(ItemDetailFragment.ARG_ITEM_ID, item.gameCompanyName);
                 if (mItemDetailFragmentContainer != null)
                 {
                     Navigation.findNavController(mItemDetailFragmentContainer).navigate(R.id.fragment_item_detail, arguments);
@@ -142,8 +153,8 @@ public class ItemListFragment extends Fragment
                  */
                 holder.itemView.setOnContextClickListener(v ->
                 {
-                    PlaceholderContent.PlaceholderItem item = (PlaceholderContent.PlaceholderItem) holder.itemView.getTag();
-                    Toast.makeText(holder.itemView.getContext(), "Context click of item " + item.id, Toast.LENGTH_LONG).show();
+                    ModelBoy item = (ModelBoy) holder.itemView.getTag();
+                    Toast.makeText(holder.itemView.getContext(), "Context click of item " + item.gameCompanyName, Toast.LENGTH_LONG).show();
                     return true;
                 });
             }
@@ -151,8 +162,8 @@ public class ItemListFragment extends Fragment
             {
                 // Setting the item id as the clip data so that the drop target is able to
                 // identify the id of the content
-                ClipData.Item clipItem = new ClipData.Item(mValues.get(position).id);
-                ClipData dragData = new ClipData(((PlaceholderContent.PlaceholderItem) v.getTag()).content, new String[]{ClipDescription.MIMETYPE_TEXT_PLAIN}, clipItem);
+                ClipData.Item clipItem = new ClipData.Item(mValues.get(position).gameCompanyName);
+                ClipData dragData = new ClipData(((ModelBoy) v.getTag()).gameCompanyYear, new String[]{ClipDescription.MIMETYPE_TEXT_PLAIN}, clipItem);
 
                 if (Build.VERSION.SDK_INT >= 24)
                 {
@@ -175,6 +186,7 @@ public class ItemListFragment extends Fragment
         {
             final TextView mIdView;
             final TextView mContentView;
+            public ModelBoy modelItem;
 
             ViewHolder(ItemListContentBinding binding)
             {
