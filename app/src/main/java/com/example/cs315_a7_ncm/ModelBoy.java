@@ -10,8 +10,8 @@ public class ModelBoy
     String wordsType;
     @SerializedName("definition")
     String wordsDefinition;
-    @SerializedName("etymology")
-    String wordsEtymology;
+//    @SerializedName("etymology")
+//    String wordsEtymology;
 
     public ModelBoy(String word, String type, String definition/*, String etymology*/)
     {
