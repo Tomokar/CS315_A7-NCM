@@ -9,6 +9,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,15 +46,22 @@ public class ModelsJunk
                         for (int i = 0; i < jsonArray.length(); i++)
                         {
                             JSONObject wordsBundle = jsonArray.getJSONObject(i);
+//                            String json = String.valueOf(wordsBundle);
 
                             String wordsWord = wordsBundle.getString("word");
                             String wordsType = wordsBundle.getString("type");
                             String wordsDefinition = wordsBundle.getString("definition") + "\n\n" + "Etymology" + "\n - \n" + wordsBundle.getString("etymology");
 //                            String wordsEtymology = wordsBundle.getString("etymology");
 
+//                            Gson gson = new Gson();
+
                             ModelBoy modelB = new ModelBoy(wordsWord, wordsType, wordsDefinition/*, wordsEtymology*/);
+
+//                            ModelBoy modelB = gson.fromJson(json, ModelBoy.class);
+
                             ITEMS.add(modelB);
                             ITEM_MAP.put(wordsWord, modelB);
+//                            ITEM_MAP.put(modelB.wordsWord, modelB);
                         }
 
 //                        activity.recreate();
