@@ -9,6 +9,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,14 +50,20 @@ public class ModelsJunk
                         for (int i = 0; i < jsonArray.length(); i++)
                         {
                             JSONObject gameCompany = jsonArray.getJSONObject(i);
+                            String json = String.valueOf(gameCompany);
 
-                            String companyName = gameCompany.getString("name");
-                            String companyYear = String.valueOf(gameCompany.getInt("year"));
-                            String companyConsole = gameCompany.getString("recentConsole");
+//                            String companyName = gameCompany.getString("name");
+//                            String companyYear = String.valueOf(gameCompany.getInt("year"));
+//                            String companyConsole = gameCompany.getString("recentConsole");
 
-                            ModelBoy modelB = new ModelBoy(companyName, companyYear, companyConsole);
+//                            ModelBoy modelB = new ModelBoy(companyName, companyYear, companyConsole);
+                            Gson gson = new Gson();
+
+                            ModelBoy modelB = gson.fromJson(json, ModelBoy.class);
+
                             ITEMS.add(modelB);
-                            ITEM_MAP.put(companyName, modelB);
+                            ITEM_MAP.put(modelB.gameCompanyName, modelB);
+//                            ITEM_MAP.put(companyName, modelB);
                         }
 
 //                        activity.recreate();
