@@ -28,10 +28,10 @@ public class ItemDetailHostActivity extends AppCompatActivity
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
     }
 
-    public void setActionBarTitle(String title)
-    {
-        getSupportActionBar().setTitle(title);
-    }
+//    public void setActionBarTitle(String title)
+//    {
+//        getSupportActionBar().setTitle(title);
+//    }
 
     @Override
     public boolean onSupportNavigateUp()

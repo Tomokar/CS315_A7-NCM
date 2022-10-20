@@ -2,7 +2,6 @@ package com.example.cs315_a7_ncm;
 
 import android.content.ClipData;
 import android.content.res.Resources;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.DragEvent;
 
@@ -17,8 +16,6 @@ import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -77,7 +74,6 @@ public class ItemDetailFragment extends Fragment
     {
         super.onCreate(savedInstanceState);
 
-
 //        ((ItemDetailHostActivity) requireActivity()).setActionBarTitle(mItem.gameCompanyName);
 
         assert getArguments() != null;
@@ -122,11 +118,11 @@ public class ItemDetailFragment extends Fragment
         if (mItem != null)
         {
 //            getActivity().getActionBar().setTitle(mItem.gameCompanyName);
-
+            String mDefEty = mItem.wordsDefinition + "\n\n" + "Etymology" + "\n - \n" + mItem.wordsEtymology;
+            mTextView.setText(mDefEty);
 //            mTextView.setText(mItem.wordsDefinition + "\n\n" + "Etymology" + "\n - \n" + mItem.wordsEtymology);
-            mTextView.setText(mItem.wordsDefinition);
-//            mToolbar.setTitle(getString(R.string.dev_name));
-
+//            mTextView.setText(mItem.wordsDefinition);
+            mToolbar.setTitle(getString(R.string.dev_name));
 
             if (mToolbarLayout != null)
             {
@@ -156,13 +152,15 @@ public class ItemDetailFragment extends Fragment
 
         // Request a string response from the provided URL.
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                response -> {
+                response ->
+                {
                     // Display the response string in our convenient existing text view
                     response = appRes.getString(R.string.tanner_response) + response;
                     mTextView.setText(response);
                     // NEXT, we need to use GSON to turn that JSON into a model
                 },
-                error -> {
+                error ->
+                {
                     // you should drop a breakpoint RIGHT HERE if you need to see the error coming back
                     mTextView.setText(R.string.tanner_error);
                 });
